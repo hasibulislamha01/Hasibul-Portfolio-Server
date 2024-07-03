@@ -14,7 +14,7 @@ app.use(cors())
 //   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 //   next();
 // });
-// app.use(cors({
+// app.use(cors({ 
 //   origin: ["http://localhost:5173", "https://travelsite-a2d59.web.app", ]
 // }))
 app.use(express.json())
@@ -46,100 +46,19 @@ async function run() {
     // await client.connect();
 
 
-    const spotCollection = client.db("spotDB").collection('spot');
-    const categoryCollection = client.db("spotDB").collection('artDB');
-    // console.log('category collection',categoryCollection)
-
-    app.post("/spot", async (req, res) => {
-      const newSpot = req.body;
-      console.log(newSpot);
-      const result = await spotCollection.insertOne(newSpot);
-      res.send(result)
-    })
+    const projectsCollection = client.db("hasibul").collection('Projects');
 
 
-    app.post('/countries', async (req, res) => {
-      const country = req.body;
-      console.log(country)
-    })
-
-
-    app.get('/spot', async (req, res) => {
-      const cursor = spotCollection.find();
-      const result = await cursor.toArray();
-      res.send(result)
-    })
-
-
-    app.get('/mySpot/:email', async (req, res) => {
-      console.log(req.params.email)
-      const result = await spotCollection.find({ email: req.params.email }).toArray();
-      res.send(result)
-    })
-
-
-    app.get('/spot/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) }
-      const result = await spotCollection.findOne(query);
-      res.send(result)
-    })
-
-    app.get('/categories', async (req, res) => {
-      const cursor = categoryCollection.find();
-      const result = await cursor.toArray();
-      // console.log('RESULT',result)
-      res.send(result)
-    })
-    app.get('/spot/:subCategory', async (req, res) => {
-      const subCategory = req.params.subCategory; 
-      console.log(subCategory)
-      const query = { subCategory: subCategory }
-      // const cursor = categoryCollection.find( query );
-      const result = await spotCollection.find( query ).toArray();
-      console.log('RESULT',result)
-      res.send(result)
+    app.post('/projects', async (req, res) => {
+      const projectInfo = req.body
+      console.log(projectInfo)
     })
 
 
 
-    app.put('/spot/:id', async (req, res) => {
-      const id = req.params.id;
-
-      // create a filter for a movie to update
-      const filter = { _id: new ObjectId(id) };
-
-      // this option instructs the method to create a document if no documents match the filter
-      const options = { upsert: true };
-
-      const updatedSpot = req.body;
-      const Spot = {
-        $set: {
-          craftName: updatedSpot.spotName,
-          photo: updatedSpot.photo,
-          subCategoryName: updatedSpot.countryName,
-          rating: updatedSpot.location,
-          description: updatedSpot.description,
-          cost: updatedSpot.cost,
-          customizable: updatedSpot.season,
-          travelDuration: updatedSpot.travelDuration,
-          visitors: updatedSpot.visitors,
-          userName: updatedSpot.userName,
-          email: updatedSpot.email,
-        },
-      };
-      const result = await spotCollection.updateOne(filter, Spot, options)
-      res.send(result)
-
-    })
 
 
-    app.delete('/spot/:id', async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) }
-      result = await spotCollection.deleteOne(query)
-      res.send(result)
-    })
+
 
 
     // Send a ping to confirm a successful connection
