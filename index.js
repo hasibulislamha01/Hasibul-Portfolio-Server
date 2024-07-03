@@ -6,7 +6,13 @@ const app = express()
 const port = process.env.PORT || 5000;
 
 
-app.use(cors())
+app.use(cors({
+  origin:[
+    'http://localhost:5000',
+    'http://localhost:5173',
+    'https://hasibul-porfolio-server.vercel.app'
+  ]
+}))
 // Enable CORS for all origins
 // app.use((req, res, next) => {
 //   res.setHeader('Access-Control-Allow-Origin', 'https://travelsite-a2d59.web.app');
@@ -46,12 +52,19 @@ async function run() {
     // await client.connect();
 
 
-    const projectsCollection = client.db("hasibul").collection('Projects');
+    const projectsCollection = client.db("Hasibul").collection('Projects');
 
 
     app.post('/projects', async (req, res) => {
       const projectInfo = req.body
       console.log(projectInfo)
+      const result = await projectsCollection.insertOne(projectInfo)
+      res.send(result)
+    })
+
+    app.get('/projects', async(req, res)=> {
+      const result = await projectsCollection.find().toArray()
+      res.send(result)
     })
 
 
