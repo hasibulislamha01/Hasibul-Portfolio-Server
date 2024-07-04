@@ -10,7 +10,8 @@ app.use(cors({
   origin:[
     'http://localhost:5000',
     'http://localhost:5173',
-    'https://hasibul-porfolio-server.vercel.app'
+    'https://hasibul-porfolio-server.vercel.app',
+    'https://hasibul-portfolio-dac39.web.app'
   ]
 }))
 // Enable CORS for all origins
