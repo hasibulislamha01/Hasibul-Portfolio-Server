@@ -14,25 +14,17 @@ app.use(cors({
     'https://hasibul-portfolio-dac39.web.app'
   ]
 }))
-// Enable CORS for all origins
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', 'https://travelsite-a2d59.web.app');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//   next();
-// });
-// app.use(cors({ 
-//   origin: ["http://localhost:5173", "https://travelsite-a2d59.web.app", ]
-// }))
+
 app.use(express.json())
 
+const user = process.env.DB_USER
+const password = process.env.DB_PASS
 
-console.log(process.env.DB_USER)
-console.log(process.env.DB_PASS)
 
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.75ieoxq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-console.log(uri)
+const uri = `mongodb+srv://${user}:${password}@cluster0.75ieoxq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+
+// console.log(uri)
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -43,9 +35,6 @@ const client = new MongoClient(uri, {
   }
 });
 
-// const db = client.db("spotDB");
-// the line below creates a collection named 'spot' in the database 
-// const spotData = db.collection('spot')  
 
 async function run() {
   try {
@@ -54,6 +43,7 @@ async function run() {
 
 
     const projectsCollection = client.db("Hasibul").collection('Projects');
+    const blogsCollection = client.db("Hasibul").collection('Blogs');
 
 
     app.post('/projects', async (req, res) => {
@@ -66,6 +56,13 @@ async function run() {
     app.get('/projects', async(req, res)=> {
       const result = await projectsCollection.find().toArray()
       res.send(result)
+    })
+
+
+    // bloogs routes
+    app.post('/blogs', async(req, res)=> {
+      const blog = req.body
+      console.log(blog)
     })
 
 
