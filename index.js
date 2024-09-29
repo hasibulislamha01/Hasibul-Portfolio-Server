@@ -78,6 +78,13 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/blog-details/:id', async (req, res) => {
+      const blogId = req.params.id;
+      const query = {_id: blogId}
+      const result = await blogsCollection.findOne(query)
+      res.send(result)
+    })
+
 
 
 
